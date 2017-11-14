@@ -1,0 +1,5 @@
+#!/bin/bash -x -e
+ID=arch-update-$(date +%s)
+docker run --name $ID -t arch:latest bash -c 'pacman -Syu --noconfirm && cd /srv/salt && git pull && salt-call --log-level info --local state.apply basic,cower,dev'
+docker commit $ID arch:latest
+docker rm $ID
